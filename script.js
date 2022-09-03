@@ -21,13 +21,14 @@
    
   const btns = document.querySelector('div');
   let playerSelection = btns.addEventListener('click', event => {
-    playerSelection = event.target.textContent;
+    console.dir(event.target)
+    playerSelection = event.target.className;
     game()
 });
   let p = document.createElement('p');
-  let body = document.querySelector('body');
-  body.appendChild(p);
-  function playRound (playerChoice, computerChoice) 
+  let main = document.querySelector('main');
+  main.appendChild(p);
+  function playRound () 
   {
       
       
@@ -88,7 +89,7 @@
   }
 let count = 0;
 let doc_count = document.createElement('h1');
-body.appendChild(doc_count)
+main.appendChild(doc_count)
    function game() {
     count++;
     doc_count.textContent = count;
