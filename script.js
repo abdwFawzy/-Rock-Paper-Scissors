@@ -58,8 +58,10 @@ let count = 0;
 let roundCount = document.createElement('h2');
 let d_playerLives = document.createElement('h2');
 let d_computerLives = document.createElement('h2');
-main.appendChild(d_playerLives)
-main.appendChild(d_computerLives)
+const score = document.querySelector('.score');
+
+score.appendChild(d_playerLives)
+score.appendChild(d_computerLives)
 main.appendChild(roundCount)
 function game() {
       playRound(playerSelection, computerPlay());
@@ -87,12 +89,14 @@ function checkGame(playerLives, computerLives)
     btns.forEach( (btn) => {
       btn.disabled = true;
     }); 
+    combatText.textContent = losing;
     return losing;
   }
   else if (computerLives == 0){
     btns.forEach((btn) => {
       btn.disabled = true;
     }); 
+    combatText.textContent = wining;
     return wining;
   }
 }
