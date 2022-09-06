@@ -29,8 +29,8 @@
     
 
   let combatText = document.createElement('p');
-  let body = document.querySelector('body');
-  body.appendChild(combatText);
+  let main = document.querySelector('main');
+  main.appendChild(combatText);
   function playRound(playerSelection, computerSelection)
   { 
     round++;
@@ -58,22 +58,23 @@ let count = 0;
 let roundCount = document.createElement('h2');
 let d_playerLives = document.createElement('h2');
 let d_computerLives = document.createElement('h2');
-body.appendChild(d_playerLives)
-body.appendChild(d_computerLives)
-body.appendChild(roundCount)
+main.appendChild(d_playerLives)
+main.appendChild(d_computerLives)
+main.appendChild(roundCount)
 function game() {
-    
-        playRound(playerSelection, computerPlay());
-        roundCount.textContent = `Rounds: ${round}`;
-        d_playerLives.textContent = `your score ${playerLives}`;
-        d_computerLives.textContent = `AI score ${computerLives}`;
-
-        if (checkGame(playerLives, computerLives)) {
-          body.appendChild(resetBtn)
-          resetBtn.addEventListener('click', e => { 
-          resetGame()
-        })
-    }
+      playRound(playerSelection, computerPlay());
+      roundCount.textContent = `Rounds: ${round}`;
+      d_playerLives.textContent = `your score ${playerLives}`;
+      d_computerLives.textContent = `AI score ${computerLives}`;
+      if (checkGame(playerLives, computerLives)) {
+          main.appendChild(resetBtn)
+            resetBtn.addEventListener('click', e => {         
+            resetGame();
+          })
+      }
+      
+      
+        
       
       
 }
@@ -86,14 +87,12 @@ function checkGame(playerLives, computerLives)
     btns.forEach( (btn) => {
       btn.disabled = true;
     }); 
-    combatText.textContent = losing;
     return losing;
   }
   else if (computerLives == 0){
     btns.forEach((btn) => {
       btn.disabled = true;
     }); 
-    combatText.textContent = wining;
     return wining;
   }
 }
