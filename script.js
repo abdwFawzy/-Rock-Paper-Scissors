@@ -3,126 +3,100 @@
 
    let choices = ['Rock', 'Paper', 'Scissors'];
 
-    function computerPlay () {
-      let result = choices[Math.floor(Math.random() * choices.length - 1)];
+    function computerPlay() {
+      let result = choices[Math.floor(Math.random() * choices.length)];
+      if(!result)
+      {
+        result = 'Paper';
+      }
       return result;
     }
 
-    // step 4 - function that plays 1 round R/P/S, and returns string
-
-
-       
-
-    let playerScore = 0;
-    let compScore = 0;
   
 
+    let playerLives = 5;
+    let computerLives = 5;
+    let round = 0;
+     
    
-   
-  const btns = document.querySelector('div');
-  let playerSelection = btns.addEventListener('click', event => {
-    playerSelection = event.target.textContent;
-    game()
-});
-  let p = document.createElement('p');
-  let body = document.querySelector('body');
-  body.appendChild(p);
-  function playRound (playerChoice, computerChoice) 
-  {
-      
-      
-    let computerSelection = computerPlay();
-
+  const btns = document.querySelectorAll('.weabon');
+  let playerSelection = btns.forEach(btn => {
+    btn.addEventListener('click', event => {
+      playerSelection = event.target.textContent;
+      game();
+    });
+  });
     
-    if (playerSelection.toLowerCase() == "Rock".toLowerCase()) {
-        if (computerSelection === "Scissors") {
-          playerScore++
 
-         
-          p.textContent = "You win! Rock beats Scissors." ; 
-          
-        }else if(computerSelection === "Paper"){
-            compScore++
-  
-           
-            p.textContent = "You lose! Paper beats rock."; 
-          
-        }else {
-          p.textContent = "Tie!"
-          
-        }
-    }
-     else if (playerSelection.toLowerCase() === "Paper".toLowerCase()) {
-      if (computerSelection == "Scissors") {
-            compScore++
-  
-           
-          p.textContent = "You lose! Scissors beats Paper!";
-        }else if (computerSelection == "Rock") {
-            playerScore++
-  
-           
-           p.textContent = "You win! Paper beats Rock!";
-        }else if(computerSelection === "Paper"){
-          p.textContent = "Tie!";
-        }
-    }
-    else if(playerSelection.toLowerCase() === "Scissors".toLowerCase()) {
-      if (computerSelection === "Rock") {
-            compScore++
-  
-           
-          p.textContent = "You lose! Rock beats Scissors!";
-        }else if (computerSelection === "Paper") {
-            playerScore++
-  
-           
-          p.textContent = "You win! Scissors beats Paper!";
-        }else {
-          p.textContent = "Tie!"
-        }
-    }
-    else{
-      p.textContent = ''
+  let combatText = document.createElement('p');
+  let body = document.querySelector('body');
+  body.appendChild(combatText);
+  function playRound(playerSelection, computerSelection)
+  { 
+    round++;
+    switch (true) {
+      
+      case (playerSelection === computerSelection):
+        combatText.innerText = `Hmm.. Two ${playerSelection}s means a draw, so no lives were lost. Let's try again.`;
+        break;
+      case (playerSelection === 'Rock' && computerSelection === 'Scissors'):
+      case (playerSelection === 'Paper' && computerSelection === 'Rock'):
+      case (playerSelection === 'Scissors' && computerSelection === 'Paper'):
+        combatText.textContent = `Impressive attack! The enemy lost one life, because the great power of your ${playerSelection} crushed his ${computerSelection}!`;
+        computerLives -= 1;
+        break;
+      default:
+        combatText.innerText = `Unfortunate defeat.. You lost one life, because your ${playerSelection} lacks of power against enemy's ${computerSelection}!`;
+        playerLives -= 1;
+        break;
     }
   }
+const resetBtn = document.createElement('button');
+resetBtn.textContent = 'Reset';
+
 let count = 0;
-let doc_count = document.createElement('h1');
-body.appendChild(doc_count)
-   function game() {
-    count++;
-    doc_count.textContent = count;
-    if (count > 4){
-      if (playerScore > compScore) {
-        compScore = 0;
-          playerScore = 0;
+let roundCount = document.createElement('h2');
+let d_playerLives = document.createElement('h2');
+let d_computerLives = document.createElement('h2');
+body.appendChild(d_playerLives)
+body.appendChild(d_computerLives)
+body.appendChild(roundCount)
+function game() {
+    
+        playRound(playerSelection, computerPlay());
+        roundCount.textContent = `Rounds: ${round}`;
+        d_playerLives.textContent = `your score ${playerLives}`;
+        d_computerLives.textContent = `AI score ${computerLives}`;
 
-         
-          count = 0;
-          doc_count.textContent = count;
-           p.textContent ="You Win the game!!!!";
-          
-      }else if (playerScore < compScore) {
-        compScore = 0;
-          playerScore = 0;
-
-         
-          count = 0;
-          doc_count.textContent = count;
-          p.textContent ="You Lost the game to a computer!";
-      }else {
-        compScore = 0;
-          playerScore = 0;
-
-         
-          count = 0;
-          doc_count.textContent = count;
-          p.textContent ="It's a Draw!";
-      }
+        if (checkGame(playerLives, computerLives)) {
+          body.appendChild(resetBtn)
+          resetBtn.addEventListener('click', e => { 
+          resetGame()
+        })
     }
-    else{
-       console.log ( playRound()); 
-    }
-   
+      
+      
+}
+
+function checkGame(playerLives, computerLives)
+{
+  const wining = "you have secured Your job";
+  const losing = "You have lost Your job";
+  if (playerLives == 0) {
+    btns.forEach( (btn) => {
+      btn.disabled = true;
+    }); 
+    combatText.textContent = losing;
+    return losing;
   }
-
+  else if (computerLives == 0){
+    btns.forEach((btn) => {
+      btn.disabled = true;
+    }); 
+    combatText.textContent = wining;
+    return wining;
+  }
+}
+function resetGame(){
+  return window.location.reload()
+}
